@@ -14,6 +14,7 @@ export default class AddressCRUD extends Component {
   constructor() {
     super();
     this.state = {
+      addresses: [],
       visible: false,
       address: {
         id: null,
@@ -65,21 +66,22 @@ export default class AddressCRUD extends Component {
   }
 
   save() {
-    this.addressService.save(this.state.address).then((data) => {
+    this.addressService.save(this.state.address).then(() => {
       this.setState({
         visible: false,
-        persona: {
+        address: {
           id: null,
-          nombre: null,
-          apellido: null,
-          direccion: null,
-          telefono: null,
+          street: null,
+          city: null,
+          state: null,
+          postalCode: null,
+          country: null,
         },
       });
       this.toast.show({
         severity: "success",
-        summary: "Atención!",
-        detail: "Se guardó el registro correctamente.",
+        summary: "Attention",
+        detail: "The register has been saved",
       });
       this.addressService
         .getAll()
@@ -88,18 +90,28 @@ export default class AddressCRUD extends Component {
   }
 
   delete() {
-    if (window.confirm("¿Realmente desea eliminar el registro?")) {
-      this.addressService.delete(this.state.selectedAddress.id).then((data) => {
-        this.toast.show({
-          severity: "success",
-          summary: "Atención!",
-          detail: "Se eliminó el registro correctamente.",
+    // if (this.selectedAddress) {
+      if (window.confirm("Do you really want to delete the record")) {
+        this.addressService.delete(this.state.selectedAddress.id).then(() => {
+          this.toast.show({
+            severity: "success",
+            summary: "Attention!",
+            detail: "Register has been deleted",
+          });
+          this.addressService
+            .getAll()
+            .then((data) => this.setState({ addresses: data }));
+        }).catch((err)=>{
+          this.toast.show({
+            severity: "error",
+            summary: "Error!",
+            detail: `${err}`,
+          });
         });
-        this.addressService
-          .getAll()
-          .then((data) => this.setState({ addresses: data }));
-      });
-    }
+      }
+    // } else {
+      // window.alert("Select a register to delete");
+    // }
   }
 
   render() {
@@ -111,11 +123,11 @@ export default class AddressCRUD extends Component {
           <DataTable
             value={this.state.addresses}
             paginator={true}
-            rows="4"
+            rows="5"
             selectionMode="single"
-            selection={this.state.selectedPersona}
+            selection={this.state.selectedAddress}
             onSelectionChange={(e) =>
-              this.setState({ selectedPersona: e.value })
+              this.setState({ selectedAddress: e.value })
             }
           >
             <Column field="id" header="ID"></Column>
@@ -134,7 +146,7 @@ export default class AddressCRUD extends Component {
           modal={true}
           onHide={() => this.setState({ visible: false })}
         >
-          <form id="persona-form">
+          <form id="address-form">
             <span className="p-float-label">
               <InputText
                 value={this.state.address.street}
@@ -144,7 +156,7 @@ export default class AddressCRUD extends Component {
                   let val = e.target.value;
                   this.setState((prevState) => {
                     let address = Object.assign({}, prevState.address);
-                    address.name = val;
+                    address.street = val;
 
                     return { address };
                   });
@@ -236,26 +248,31 @@ export default class AddressCRUD extends Component {
       visible: true,
       address: {
         id: null,
-        nombre: null,
-        apellido: null,
-        direccion: null,
-        telefono: null,
+        street: null,
+        city: null,
+        state: null,
+        postalCode: null,
+        country: null,
       },
     });
-    document.getElementById("persona-form").reset();
+    document.getElementById("address-form").reset();
   }
 
   showEditDialog() {
-    this.setState({
-      visible: true,
-      address: {
-        id: this.state.selectedAddress.id,
-        nombre: this.state.selectedAddress.street,
-        apellido: this.state.selectedAddress.city,
-        direccion: this.state.selectedAddress.state,
-        telefono: this.state.selectedAddress.postal_code,
-        country: this.state.selectedAddress.country,
-      },
-    });
+    // if (this.selectedAddress) {
+      this.setState({
+        visible: true,
+        address: {
+          id: this.state.selectedAddress.id,
+          street: this.state.selectedAddress.street,
+          city: this.state.selectedAddress.city,
+          state: this.state.selectedAddress.state,
+          postalCode: this.state.selectedAddress.postalCode,
+          country: this.state.selectedAddress.country,
+        },
+      });
+    // } else {
+      // window.alert("Select a register to edit");
+    // }
   }
 }
