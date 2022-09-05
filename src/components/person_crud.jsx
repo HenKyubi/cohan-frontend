@@ -174,7 +174,7 @@ export default class PersonCRUD extends Component {
           <DataTable
             value={this.state.persons}
             paginator={true}
-            rows="6"
+            rows={6}
             selectionMode="single"
             selection={this.state.selectedPerson}
             onSelectionChange={(e) =>

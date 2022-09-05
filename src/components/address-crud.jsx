@@ -146,7 +146,7 @@ export default class AddressCRUD extends Component {
           <DataTable
             value={this.state.addresses}
             paginator={true}
-            rows="6"
+            rows={6}
             selectionMode="single"
             selection={this.state.selectedAddress}
             onSelectionChange={(e) =>

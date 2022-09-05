@@ -21,6 +21,9 @@ const App = () => {
 
   return (
     <>
+      <div style={{ paddingTop: "2rem", paddingLeft: "2rem" }}>
+        <Button icon="pi pi-list" onClick={(e) => setVisible(true)} />
+      </div>
       <Routes>
         <Route path="/address" element={<AddressCRUD />} />
         <Route path="/" element={<PersonCRUD />} />
@@ -40,9 +43,6 @@ const App = () => {
           </ul>
         </div>
       </Sidebar>
-      <div style={{ paddingTop: "2rem", paddingLeft: "2rem" }}>
-        <Button icon="pi pi-list" onClick={(e) => setVisible(true)} />
-      </div>
 
       {/* <Login/> */}
       {/* <AddressCRUD/> */}

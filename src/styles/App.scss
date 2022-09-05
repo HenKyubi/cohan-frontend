@@ -1,8 +1,26 @@
-#listCRUDS{
-  list-style:none;
+#listCRUDS {
+  list-style: none;
   display: flex;
   justify-content: center;
-  a{
-    color: #6366F1
+  ul {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 70%;
+  }
+  li {
+    padding: 0.5rem 0;
+    margin: 0.5rem 0;
+    width: 100%;
+    border-radius: 8px;
+    border: solid 2px #6366f1;
+  }
+  a {
+    color: #6366f1;
+    width: 100%;
+    font-size: 16;
+    font-weight: 600;
+    padding: 0.3rem;
   }
 }
+
