@@ -1,6 +1,5 @@
 import { Component } from "react";
-import { AddressService } from "../service/addressService";
-// import { Address } from "../interfaces/types";
+import { PersonService } from "../service/personService";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Panel } from "primereact/panel";
@@ -9,16 +8,24 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import { AddressService } from "../service/addressService";
 // import TextField from "@mui/material/TextField";
 // import Stack from "@mui/material/Stack";
 // import Autocomplete from "@mui/material/Autocomplete";
 
-export default class AddressCRUD extends Component {
+export default class PersonCRUD extends Component {
   constructor() {
     super();
     this.state = {
-      addresses: [],
+      persons: [],
       visible: false,
+      person: {
+        id: null,
+        name: null,
+        phoneNumber: null,
+        emailAddress: null,
+        addressId: null,
+      },
       address: {
         id: null,
         street: null,
@@ -27,7 +34,7 @@ export default class AddressCRUD extends Component {
         postalCode: null,
         country: null,
       },
-      selectedAddress: {},
+      selectedPerson: {},
       // searchBarValue: ""
     };
     this.items = [
@@ -53,6 +60,7 @@ export default class AddressCRUD extends Component {
         },
       },
     ];
+    this.personService = new PersonService();
     this.addressService = new AddressService();
     this.save = this.save.bind(this);
     this.delete = this.delete.bind(this);
@@ -64,49 +72,69 @@ export default class AddressCRUD extends Component {
   }
 
   componentDidMount() {
-    this.addressService
+    this.personService
       .getAll()
-      .then((data) => this.setState({ addresses: data }));
+      .then((data) => this.setState({ persons: data }));
   }
 
   save() {
-    this.addressService.save(this.state.address).then(() => {
-      this.setState({
-        visible: false,
-        address: {
-          id: null,
-          street: null,
-          city: null,
-          state: null,
-          postalCode: null,
-          country: null,
-        },
+    this.addressService
+      .save(this.state.address)
+      .then((response) => {
+        let person = Object.assign({}, this.state.person);
+        person.addressId = response;
+        this.personService.save(person).then(() => {
+          this.setState({
+            visible: false,
+            person: {
+              id: null,
+              name: null,
+              phoneNumber: null,
+              emailAddress: null,
+              addressId: null,
+            },
+            address: {
+              id: null,
+              street: null,
+              city: null,
+              state: null,
+              postalCode: null,
+              country: null,
+            },
+          });
+          this.toast.show({
+            severity: "success",
+            summary: "Attention",
+            detail: "The register has been saved",
+          });
+          this.personService
+            .getAll()
+            .then((data) => this.setState({ persons: data }));
+        });
+      })
+      .catch((err) => {
+        this.toast.show({
+          severity: "error",
+          summary: "Error!",
+          detail: `${err}`,
+        });
       });
-      this.toast.show({
-        severity: "success",
-        summary: "Attention",
-        detail: "The register has been saved",
-      });
-      this.addressService
-        .getAll()
-        .then((data) => this.setState({ addresses: data }));
-    });
   }
 
   delete() {
-    // if (this.selectedAddress) {
+    // if (this.selectedPerson) {
     if (window.confirm("Do you really want to delete the record")) {
-      this.addressService
-        .delete(this.state.selectedAddress.id)
+      this.personService
+        .delete(this.state.selectedPerson.id)
         .then(() => {
           this.toast.show({
             severity: "success",
             summary: "Attention!",
             detail: "Register has been deleted",
           });
-          this.addressService
+          this.personService
             .getAll()
-            .then((data) => this.setState({ addresses: data }));
+            .then((data) => this.setState({ persons: data }));
         })
         .catch((err) => {
           this.toast.show({
@@ -122,7 +150,7 @@ export default class AddressCRUD extends Component {
   }
 
   // find(id){
-  //   this.addressService.findById(id).then((res)=>{this.setState({addresses: res}) })
+  //   this.personService.findById(id).then((res)=>{this.setState({persons: res}) })
   // }
 
   render() {
@@ -133,8 +161,8 @@ export default class AddressCRUD extends Component {
         {/* <Autocomplete
           id="free-solo-demo"
           freeSolo
-          options={this.state.addresses.map((item) => item.id)}
-          // options={this.addresses.map((option) => option.id)}
+          options={this.state.persons.map((item) => item.id)}
+          // options={this.persons.map((option) => option.id)}
           renderInput={(params) => (
             <TextField {...params} label="Search by Id" />
           )}
@@ -142,37 +170,99 @@ export default class AddressCRUD extends Component {
           onChange={(e, newValue) => {this.setState({searchBarValue: newValue}, this.find(this.state.searchBarValue))}}
         />
         <br /> */}
-        <Panel header="Address CRUD">
+        <Panel header="Person CRUD">
           <DataTable
-            value={this.state.addresses}
+            value={this.state.persons}
             paginator={true}
             rows="5"
             selectionMode="single"
-            selection={this.state.selectedAddress}
+            selection={this.state.selectedPerson}
             onSelectionChange={(e) =>
-              this.setState({ selectedAddress: e.value })
+              this.setState({ selectedPerson: e.value })
             }
           >
             <Column field="id" header="ID" />
-            <Column field="street" header="Street" />
-            <Column field="city" header="City" />
-            <Column field="state" header="State" />
-            <Column field="postalCode" header="Postal code" />
-            <Column field="country" header="Country" />
+            <Column field="name" header="Name" />
+            <Column field="phoneNumber" header="Phone number" />
+            <Column field="emailAddress" header="Email address" />
+            <Column field="addressId.id" header="Address ID" />
+            <Column field="addressId.street" header="Address Street" />
+            <Column field="addressId.city" header="Address City" />
+            <Column field="addressId.state" header="Address State" />
+            <Column field="addressId.postalCode" header="Address Postal code" />
+            <Column field="addressId.country" header="Address Country" />
           </DataTable>
         </Panel>
         <Dialog
-          header="Create address"
+          header={
+            this.state.selectedPerson.id !== null
+              ? `Create person`
+              : `Edit person`
+          }
           visible={this.state.visible}
           style={{ width: "400px" }}
           footer={this.footer}
           modal={true}
           onHide={() => this.setState({ visible: false })}
         >
-          <form id="address-form">
+          <form id="person-form">
             <span className="p-float-label">
               <InputText
-                value={this.state.address.street}
+                value={this.state.person.name}
+                style={{ width: "100%" }}
+                id="name"
+                onChange={(e) => {
+                  let val = e.target.value;
+                  this.setState((prevState) => {
+                    let person = Object.assign({}, prevState.person);
+                    person.name = val;
+
+                    return { person };
+                  });
+                }}
+              />
+              <label htmlFor="name">Name</label>
+            </span>
+            <br />
+            <span className="p-float-label">
+              <InputText
+                value={this.state.person.phoneNumber}
+                style={{ width: "100%" }}
+                id="phoneNumber"
+                onChange={(e) => {
+                  let val = e.target.value;
+                  this.setState((prevState) => {
+                    let person = Object.assign({}, prevState.person);
+                    person.phoneNumber = val;
+
+                    return { person };
+                  });
+                }}
+              />
+              <label htmlFor="phoneNumber">Phone number</label>
+            </span>
+            <br />
+            <span className="p-float-label">
+              <InputText
+                value={this.state.person.emailAddress}
+                style={{ width: "100%" }}
+                id="emailAddress"
+                onChange={(e) => {
+                  let val = e.target.value;
+                  this.setState((prevState) => {
+                    let person = Object.assign({}, prevState.person);
+                    person.emailAddress = val;
+
+                    return { person };
+                  });
+                }}
+              />
+              <label htmlFor="emailAddress">Email address</label>
+            </span>
+            <br />
+            <span className="p-float-label">
+              <InputText
+                value={this.state.address?.street}
                 style={{ width: "100%" }}
                 id="street"
                 onChange={(e) => {
@@ -190,7 +280,7 @@ export default class AddressCRUD extends Component {
             <br />
             <span className="p-float-label">
               <InputText
-                value={this.state.address.city}
+                value={this.state.address?.city}
                 style={{ width: "100%" }}
                 id="city"
                 onChange={(e) => {
@@ -208,7 +298,7 @@ export default class AddressCRUD extends Component {
             <br />
             <span className="p-float-label">
               <InputText
-                value={this.state.address.state}
+                value={this.state.address?.state}
                 style={{ width: "100%" }}
                 id="state"
                 onChange={(e) => {
@@ -226,7 +316,7 @@ export default class AddressCRUD extends Component {
             <br />
             <span className="p-float-label">
               <InputText
-                value={this.state.address.postalCode}
+                value={this.state.address?.postalCode}
                 style={{ width: "100%" }}
                 id="postalCode"
                 onChange={(e) => {
@@ -244,7 +334,7 @@ export default class AddressCRUD extends Component {
             <br />
             <span className="p-float-label">
               <InputText
-                value={this.state.address.country}
+                value={this.state.address?.country}
                 style={{ width: "100%" }}
                 id="country"
                 onChange={(e) => {
@@ -269,6 +359,13 @@ export default class AddressCRUD extends Component {
   showSaveDialog() {
     this.setState({
       visible: true,
+      person: {
+        id: null,
+        name: null,
+        phoneNumber: null,
+        emailAddress: null,
+        addressId: null,
+      },
       address: {
         id: null,
         street: null,
@@ -278,20 +375,27 @@ export default class AddressCRUD extends Component {
         country: null,
       },
     });
-    document.getElementById("address-form").reset();
+    document.getElementById("person-form").reset();
   }
 
   showEditDialog() {
-    // if (this.selectedAddress) {
+    // if (this.selectedPerson) {
     this.setState({
       visible: true,
+      person: {
+        id: this.state.selectedPerson.id,
+        name: this.state.selectedPerson.name,
+        phoneNumber: this.state.selectedPerson.phoneNumber,
+        emailAddress: this.state.selectedPerson.emailAddress,
+        addressId: this.state.selectedPerson.addressId,
+      },
       address: {
-        id: this.state.selectedAddress.id,
-        street: this.state.selectedAddress.street,
-        city: this.state.selectedAddress.city,
-        state: this.state.selectedAddress.state,
-        postalCode: this.state.selectedAddress.postalCode,
-        country: this.state.selectedAddress.country,
+        id: this.state.selectedPerson.addressId.id,
+        street: this.state.selectedPerson.addressId.street,
+        city: this.state.selectedPerson.addressId.city,
+        state: this.state.selectedPerson.addressId.state,
+        postalCode: this.state.selectedPerson.addressId.postalCode,
+        country: this.state.selectedPerson.addressId.country,
       },
     });
     // } else {

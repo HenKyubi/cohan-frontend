@@ -8,13 +8,15 @@ import "primeicons/primeicons.css";
 //Components
 // import Login from "./components/login";
 import AddressCRUD from "./components/address-crud";
+import PersonCRUD from "./components/person_crud";
 
 const App = () => {
 
   return (
     <>
       {/* <Login/> */}
-      <AddressCRUD/>
+      {/* <AddressCRUD/> */}
+      <PersonCRUD/>
     </>
   );
 };

@@ -6,3 +6,11 @@ export interface Address {
   postal_code: number;
   country: string;
 }
+
+export interface Person {
+  id: number;
+  name: string;
+  phoneNumber: string;
+  emailAddress: string;
+  addressId: number;
+}

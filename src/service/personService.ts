@@ -1,10 +1,10 @@
 import axios from "axios";
-import { Address } from "../interfaces/types";
-export class AddressService {
+import { Person } from "../interfaces/types";
+export class PersonService {
   baseURL: string = "http://localhost:8080/api/";
-  async getAll(): Promise<Array<Address>> {
+  async getAll(): Promise<Array<Person>> {
     return await axios
-      .get(`${this.baseURL}address`)
+      .get(`${this.baseURL}person`)
       .then((response) => response.data);
   }
 
@@ -14,15 +14,15 @@ export class AddressService {
   //     .then((response) => response.data);
   // }
 
-  async save(address: Address): Promise<Address> {
+  async save(person: Person): Promise<void> {
     return await axios
-      .post(`${this.baseURL}address`, address)
+      .post(`${this.baseURL}person`, person)
       .then((response) => response.data);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     return await axios
-      .delete(`${this.baseURL}address/${id}`)
+      .delete(`${this.baseURL}person/${id}`)
       .then((response) => response.data);
   }
 }
