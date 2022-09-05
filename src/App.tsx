@@ -10,14 +10,6 @@ import "primeicons/primeicons.css";
 import AddressCRUD from "./components/address-crud";
 
 const App = () => {
-  // const [address, setAddress] = useState<Array<Address>>([]);
-  // const addressService: AddressService = new AddressService();
-
-  // // const getAllAddress=()=>{AddressService}
-
-  // useEffect(() => {
-  //   addressService.getAll().then((res) => setAddress(res));
-  // }, []);
 
   return (
     <>
@@ -28,11 +20,3 @@ const App = () => {
 };
 
 export default App;
-
-// export default class App extends Component {
-//   constructor(){
-//     super();
-//     this.state={}
-//     this.addressService = new AddressService();
-//   }
-// }
