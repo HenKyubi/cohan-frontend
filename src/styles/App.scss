@@ -1,0 +1,19 @@
+#listCRUDS{
+  list-style:none;
+  display: flex;
+  justify-content: center;
+  ul{
+    margin: 0
+  }
+  li{
+    text-decoration: none;
+    ::marker{
+    text-decoration: none;
+      
+    }
+  }
+  a{
+    text-decoration: none;
+
+  }
+}
