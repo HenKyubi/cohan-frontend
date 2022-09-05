@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/cohan-frontend/static/css/main.bf2f97f4.css",
+    "main.js": "/cohan-frontend/static/js/main.1e3ef52f.js",
+    "static/js/787.afc2f0d4.chunk.js": "/cohan-frontend/static/js/787.afc2f0d4.chunk.js",
+    "static/media/primeicons.svg": "/cohan-frontend/static/media/primeicons.c6e2053303524e39530c.svg",
+    "static/media/primeicons.eot": "/cohan-frontend/static/media/primeicons.7fc4d8e224d1ff1b9c62.eot",
+    "static/media/primeicons.woff": "/cohan-frontend/static/media/primeicons.449aa8c65cdc5c2a8686.woff",
+    "static/media/primeicons.ttf": "/cohan-frontend/static/media/primeicons.91bacab1f083f2795272.ttf",
+    "index.html": "/cohan-frontend/index.html",
+    "main.bf2f97f4.css.map": "/cohan-frontend/static/css/main.bf2f97f4.css.map",
+    "main.1e3ef52f.js.map": "/cohan-frontend/static/js/main.1e3ef52f.js.map",
+    "787.afc2f0d4.chunk.js.map": "/cohan-frontend/static/js/787.afc2f0d4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bf2f97f4.css",
+    "static/js/main.1e3ef52f.js"
+  ]
+}
