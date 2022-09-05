@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 
 //Styles
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import "../src/styles/App.scss"
+import "../src/styles/App.scss";
 
 //PrimeReact
 import { Sidebar } from "primereact/sidebar";
@@ -20,14 +21,21 @@ const App = () => {
 
   return (
     <>
+      <Routes>
+        <Route path="/address" element={<AddressCRUD />} />
+        <Route path="/" element={<PersonCRUD />} />
+      </Routes>
       <Sidebar visible={visible} onHide={() => setVisible(false)}>
-        <div id="listCRUDS" style={{display:"flex", justifyContent:"center"}}>
+        <div
+          id="listCRUDS"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           <ul>
             <li>
-              <a href="">Address</a>
+              <Link to="/address">Address</Link>
             </li>
             <li>
-              <a href="">Person</a>
+              <Link to="/">Person</Link>
             </li>
           </ul>
         </div>
@@ -38,7 +46,7 @@ const App = () => {
 
       {/* <Login/> */}
       {/* <AddressCRUD/> */}
-      <PersonCRUD />
+      {/* <PersonCRUD /> */}
     </>
   );
 };
