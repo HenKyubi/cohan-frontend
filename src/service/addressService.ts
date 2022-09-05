@@ -8,6 +8,12 @@ export class AddressService {
       .then((response) => response.data);
   }
 
+  // async findById(id: number): Promise<Address> {
+  //   return await axios
+  //     .get(`${this.baseURL}address/${id}`)
+  //     .then((response) => response.data);
+  // }
+
   async save(address: Address): Promise<void> {
     return await axios
       .post(`${this.baseURL}address`, address)

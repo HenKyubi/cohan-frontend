@@ -9,6 +9,9 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+// import TextField from "@mui/material/TextField";
+// import Stack from "@mui/material/Stack";
+// import Autocomplete from "@mui/material/Autocomplete";
 
 export default class AddressCRUD extends Component {
   constructor() {
@@ -25,6 +28,7 @@ export default class AddressCRUD extends Component {
         country: null,
       },
       selectedAddress: {},
+      // searchBarValue: ""
     };
     this.items = [
       {
@@ -114,11 +118,27 @@ export default class AddressCRUD extends Component {
     // }
   }
 
+  // find(id){
+  //   this.addressService.findById(id).then((res)=>{this.setState({addresses: res}) })
+  // }
+
   render() {
     return (
       <div style={{ width: "80%", margin: "0 auto", marginTop: "20px" }}>
         <Menubar model={this.items} />
         <br />
+        {/* <Autocomplete
+          id="free-solo-demo"
+          freeSolo
+          options={this.state.addresses.map((item) => item.id)}
+          // options={this.addresses.map((option) => option.id)}
+          renderInput={(params) => (
+            <TextField {...params} label="Search by Id" />
+          )}
+          value={this.state.searchBarValue}
+          onChange={(e, newValue) => {this.setState({searchBarValue: newValue}, this.find(this.state.searchBarValue))}}
+        />
+        <br /> */}
         <Panel header="Address CRUD">
           <DataTable
             value={this.state.addresses}
