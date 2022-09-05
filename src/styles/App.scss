@@ -1,12 +1,14 @@
 #listCRUDS {
   list-style: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   ul {
     margin: 0;
     padding: 0;
     text-align: center;
-    width: 70%;
+    width: 100%;
   }
   li {
     padding: 0.5rem 0;
@@ -21,6 +23,12 @@
     font-size: 16;
     font-weight: 600;
     padding: 0.3rem;
+  }
+  .btn-signout{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
   }
 }
 

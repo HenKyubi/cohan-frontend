@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { AuthService } from "../service/authService";
 
 function Copyright(props: any) {
   return (
@@ -23,23 +24,37 @@ function Copyright(props: any) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+        HenKyubi666
+      </Link>
+      {` ${new Date().getFullYear()}`}
     </Typography>
   );
 }
 
 const theme = createTheme();
 
-export default function Login() {
+interface Props {
+  setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Login: React.FC<Props> = ({ setIsLogged }) => {
+  const authService = new AuthService();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    const login = async () => {
+      return await authService.login({
+        emailAddress: data.get("email"),
+        phoneNumber: data.get("password"),
+      });
+    };
+    login().then((res) => {
+      if (res) {
+        setIsLogged(res);
+      } else {
+        window.alert("Email o numero de telefono incorrecto");
+      }
     });
   };
 
@@ -100,7 +115,7 @@ export default function Login() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Phone number"
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -117,18 +132,7 @@ export default function Login() {
               >
                 Sign In
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
@@ -136,4 +140,6 @@ export default function Login() {
       </Grid>
     </ThemeProvider>
   );
-}
+};
+
+export default Login;
