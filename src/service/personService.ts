@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Person } from "../interfaces/types";
 export class PersonService {
-  baseURL: string = "http://localhost:8080/api/";
+  baseURL: string = "https://cohan-backend.herokuapp.com/api/";
   async getAll(): Promise<Array<Person>> {
     return await axios
       .get(`${this.baseURL}person`)

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Address } from "../interfaces/types";
 export class AddressService {
-  baseURL: string = "http://localhost:8080/api/";
+  baseURL: string = "https://cohan-backend.herokuapp.com/api/";
   async getAll(): Promise<Array<Address>> {
     return await axios
       .get(`${this.baseURL}address`)
